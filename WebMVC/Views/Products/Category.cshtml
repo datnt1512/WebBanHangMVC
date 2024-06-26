@@ -1,0 +1,55 @@
+﻿@model IEnumerable<WebMVC.Models.Product>
+@{
+    ViewBag.Title = "Danh sách sản phẩm";
+}
+<style>
+
+
+    body {
+        padding-top: 20px;
+        background-color: #f8f9fa;
+    }
+
+    .product-card {
+        margin-bottom: 30px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+
+    .card-img-top {
+        height: 250px; /* Độ cao cố định cho hình ảnh */
+        object-fit: contain; /* Hiển thị toàn bộ hình ảnh */
+        display: block; /* Để căn giữa hình ảnh trong khung */
+        margin: 0 auto; /* Căn giữa hình ảnh theo chiều ngang */
+    }
+
+    .card-body {
+        text-align: center;
+    }
+</style>
+<h2 class="mb-4 text-center text-capitalize">Danh sách sản phẩm</h2>
+<div class="row">
+    @if (Model.Any())
+    {
+        foreach (var item in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card product-card">
+                    <img src="@Url.Content("~/Images/" + item.SrcImage)" class="card-img-top" />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ProductName</h5>
+                        <p class="card-text"><strong>Giá:</strong> @String.Format("{0:N0} ₫", item.Price)</p>
+                        <a href="@Url.Action("Detail", "Product", new { id = item.ProductId, alias = item.Alias })" class="btn btn-primary">Xem chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-12 text-center">
+            <p class="text-muted">Chưa có sản phẩm nào.</p>
+        </div>
+    }
+</div>
+

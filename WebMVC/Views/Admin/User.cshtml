@@ -1,0 +1,65 @@
+﻿@using PagedList.Mvc;
+@using WebMVC.Enums;
+
+@model PagedList.IPagedList<WebMVC.Models.User>
+
+@{
+    int No = 1;
+}
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Danh sách người dùng</h5>
+           
+        </div>
+        <div class="card-body">
+           
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tài khoản</th>
+                        <th>Họ tên</th>
+                        <th>Email</th>
+                        <th>Vai trò</th>
+                        <th>Ngày tạo</th>
+                    
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(No++)</td>
+                            <td>@item.Username</td>
+                            <td>@item.FullName</td>
+                            <td>@item.Email</td>
+                            <td>
+                                @if (item.RoleType == RoleType.Admin)
+                                {
+                                    <strong>Quản trị viên</strong>
+                                   
+                                }
+                                else if (item.RoleType == RoleType.User)
+                                {
+                                    <strong>Người dùng</strong>
+                                }
+                            </td>
+                            <td>@item.CreatedDate.ToShortDateString()</td>
+                            </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="pull-right">
+    <!-- Hiển thị phân trang -->
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+
+

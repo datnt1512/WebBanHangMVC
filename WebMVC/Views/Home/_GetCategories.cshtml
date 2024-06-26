@@ -1,0 +1,10 @@
+﻿@model IEnumerable<WebMVC.Models.ProductCategory>
+
+
+@foreach (var item in Model)
+{
+    <li class="list-group-item">
+        <a href="@Url.Action("Category", "Products", new { id = item.ProductCategoryId })">@item.CategoryName</a>
+    </li>
+
+}

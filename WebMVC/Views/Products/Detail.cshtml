@@ -1,0 +1,43 @@
+﻿@model WebMVC.Models.Product
+@{
+    ViewBag.Title = "Chi tiết sàn phẩm";
+}
+<style>
+    .product-description {
+        color: #333;
+    }
+
+    .product-price {
+        color: #007bff;
+        font-size: 1.2rem;
+    }
+    .product-image-container {
+        overflow: hidden;
+    }
+
+    .product-image {
+        transition: transform 0.3s ease;
+    }
+
+        .product-image:hover {
+            transform: scale(1.1);
+        }
+</style>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="product-image-container">
+                <img src="@Url.Content("~/Images/" + Model.SrcImage)" class="img-fluid product-image" style="width:90% ; height:90%" alt="Ảnh sản phẩm" />
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <h3 class="mb-3">@Model.ProductName</h3>
+            <p class="product-price"><strong>Giá:</strong>@String.Format("{0:N0} ₫", Model.Price)</p>
+            <p class="product-description"><strong>Mô tả:</strong></p>
+            <p class="product-description">
+                @Model.Description
+            </p>
+        </div>
+    </div>
+</div>
+

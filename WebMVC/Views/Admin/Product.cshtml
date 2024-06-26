@@ -1,0 +1,109 @@
+﻿
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<WebMVC.Models.Product>
+
+@{
+    int No = 1;
+}
+
+<div class="row">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title"></h5>
+            <div class="text-center mb-4">
+                <div class="text-left m-auto">
+
+                    @if (TempData["error"] != null && !string.IsNullOrEmpty(TempData["error"].ToString()))
+                    {
+                        
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>@TempData["error"]</strong>
+                        </div>
+                    }
+
+                    @if (TempData["success"] != null && !string.IsNullOrEmpty(TempData["success"].ToString()))
+                    {
+                        <div class="alert alert-success alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>@TempData["success"]</strong>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <a href="@Url.Action("CreateProduct", "Admin")" class="btn btn-primary">
+                Thêm mới
+            </a>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Đơn giá</th>
+                        <th>Hình ảnh</th>
+                        <th>Ngày tạo</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>@(No++)</td>
+                        <td>@item.ProductName</td>
+                        <td>@String.Format("{0:N0} ₫", item.Price)</td>
+                        <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <img src="@Url.Content("~/Images/" + item.SrcImage)" class="thumbnail img-circle mt shop-logo" style="width:50px; height:50px; object-fit:cover;" />
+                        </td>
+
+                        <td class="text-center">
+                            <a href="@Url.Action("EditProduct", "Admin", new { id = item.ProductId })">
+                                <i class="fas fa-edit pr-4"></i>
+                            </a>
+                            <a onclick="deleteItem('@item.ProductId')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="pull-right">
+    <!-- Hiển thị phân trang -->
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+</div>
+
+@section scripts {
+    <script>
+        function deleteItem(id) {
+            if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '@Url.Action("DeleteProduct", "Admin")');
+
+                var hiddenField = document.createElement('input');
+                hiddenField.setAttribute('type', 'hidden');
+                hiddenField.setAttribute('name', 'id');
+                hiddenField.setAttribute('value', id);
+
+                form.appendChild(hiddenField);
+
+                document.body.appendChild(form);
+
+                form.submit();
+            }
+        }
+    </script>
+}
